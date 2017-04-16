@@ -1,6 +1,6 @@
 {
     "tokenKey": "x-rockcoolt-token",
     "tokeExpiresTime": "12h",
-    "Port": 3000,
-    "DB_Connection_String": "mongodb://localhost/Test"
+    "Port": 4200,
+    "DB_Connection_String": "mongodb://localhost:28018/Test"
 }
