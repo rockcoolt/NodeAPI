@@ -30,7 +30,7 @@ export class UserSchema {
                 type: Date,
                 default: Date.now
             },
-            picture: {
+            avatar: {
                 type: String,
                 default: null
             }
