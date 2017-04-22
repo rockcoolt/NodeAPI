@@ -16,8 +16,8 @@ export class RegisterControllers {
     /**
      * registration
      */
-    public registration(_email: string, _password: string, _pseudo?: string, _roles?: Roles, _picture? : string) {
-        let _model = new User(_email, _password, false, _pseudo, _roles, _picture);
+    public registration(_login: string, _email: string, _password: string,  _roles?: Roles, _avatar? : string) {
+        let _model = new User(_login, _password, false, _email, _roles, _avatar);
 
         try {
 

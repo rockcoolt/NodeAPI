@@ -21,7 +21,7 @@ export class RegisterRouter {
     public register(req: Request, res: Response, next: NextFunction): void {
         try {
 
-            let obj = new RegisteController().registration(req.body.email, req.body.password, req.body.pseudo, req.body.roles, req.body.avatar).subscribe({
+            let obj = new RegisteController().registration(req.body.login, req.body.email, req.body.password, req.body.roles, req.body.avatar).subscribe({
                 next: created => {
                     res.status(STATUSCODES.CREATED).send({ 
                         success: true,
