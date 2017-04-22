@@ -12,7 +12,7 @@ class User implements IUser {
     private login: string;
     private created: Date;
     private roles: Roles;
-    private picture: string;
+    private avatar: string;
 
     Email(): string {
         return this.email;
@@ -34,19 +34,19 @@ class User implements IUser {
         return this.roles;
     }
 
-    Picture(): string {
-        return this.picture;
+    Avatar(): string {
+        return this.avatar;
     }
 
 
-    constructor(_login: string, _password: string,  _isAuth: boolean = false, _email?: string, _roles?: Roles, _picture? : string ){
+    constructor(_login: string, _password: string,  _isAuth: boolean = false, _email?: string, _roles?: Roles, _avatar? : string ){
         this.setLogin(_login);
         this.setPassword(_password);
 
         if (!_isAuth) {
             this.setEmail(_email);
             this.setRoles(_roles);
-            this.picture = _picture;
+            this.avatar = _avatar;
         }       
     }
 
