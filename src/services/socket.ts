@@ -26,6 +26,9 @@ class Socket {
         .on('connection', function(socket) {
             socket.emit('message', `Bienvenu ${socket.decoded.login} !`);
             socket.broadcast.emit('message', `${socket.decoded.login} vient de se connecter !`);
+             socket.on('message', function (message) {
+                 socket.emit('message', `TEST BABY`);
+            });	
         });
     }
   
