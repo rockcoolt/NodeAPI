@@ -27,7 +27,7 @@ class Routes {
     });
 
 
-    this.router.use('/', router);
+    this.router.use('/api', router);
     this.router.use('/api/', LoginRouter);
     this.router.use('/api/', RegisterRouter);
     this.router.use('/api/heroes', HeroRouter);
