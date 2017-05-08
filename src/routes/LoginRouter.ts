@@ -27,7 +27,7 @@ export class LoginRouter {
       * @param next 
       */
      public login(req: Request, res: Response, next: NextFunction): void {
-        var ip = req.headers;
+        var ip = req.headers['x-appengine-user-ip'];
         try {
 
             let obj = new LoginController().authenticate(req.body.login, req.body.password).subscribe({
