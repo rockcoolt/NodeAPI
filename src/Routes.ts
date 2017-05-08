@@ -22,7 +22,7 @@ class Routes {
     // placeholder route handler
     router.get('/', (req, res, next) => {
         res.json({
-        message: `RoCkCoOlT API! ${req.headers["X-Real-IP"]}  ${req.connection.remoteAddress}`
+        message: `RoCkCoOlT API! ${req.headers['X-Real-IP']}  ${req.headers['x-forwarded-for']}`
         });
     });
 
