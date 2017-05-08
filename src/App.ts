@@ -30,7 +30,6 @@ class App {
 
   // Configure Express middleware.
   private middleware(): void {
-    this.express.set('trust_proxy', 1);
     this.express.use(logger('dev'));
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
