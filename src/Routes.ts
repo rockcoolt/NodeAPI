@@ -24,7 +24,7 @@ class Routes {
         const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
         res.json({
-        message: `RoCkCoOlT API! ${req.headers['x-forwarded-for']} ${req.connection.remoteAddress}`,
+        message: `RoCkCoOlT API! ${req.headers['x-real-ip']} ${req.connection.remoteAddress}`,
         headers:  req.headers
         });
     });
