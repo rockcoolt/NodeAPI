@@ -21,8 +21,9 @@ class Routes {
 
     // placeholder route handler
     router.get('/', (req, res, next) => {
+        const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         res.json({
-        message: `RoCkCoOlT API! ${req.connection.remoteAddress}`
+        message: `RoCkCoOlT API! ${ip}`
         });
     });
 
