@@ -22,7 +22,7 @@ class Routes {
     // placeholder route handler
     router.get('/', (req, res, next) => {
         res.json({
-        message: 'RoCkCoOlT API!'
+        message: `RoCkCoOlT API! ${req.connection.remoteAddress}`
         });
     });
 
@@ -30,7 +30,6 @@ class Routes {
     this.router.use('/api', router);
     this.router.use('/api/', LoginRouter);
     this.router.use('/api/', RegisterRouter);
-    this.router.use('/api/heroes', HeroRouter);
     };
 }
 

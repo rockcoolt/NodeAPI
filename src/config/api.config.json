@@ -2,5 +2,7 @@
     "tokenKey": "x-rockcoolt-token",
     "tokeExpiresTime": "12h",
     "Port": 4000,
-    "DB_Connection_String": "mongodb://5.9.122.228:28018/Test"
+    "DB_Connection_String": "mongodb://5.9.122.228:28018/Test",
+    "RedisPort": "6777",
+    "RedisServer": "5.9.122.228"
 }

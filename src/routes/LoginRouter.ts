@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { sign, verify, TokenExpiredError } from 'jsonwebtoken';
 
 //Controllers
 import LoginController from '../controllers/LoginControllers';
@@ -28,15 +27,12 @@ export class LoginRouter {
       * @param next 
       */
      public login(req: Request, res: Response, next: NextFunction): void {
-
+        var ip = req.connection.remoteAddress;
+        console.log('ip: ', ip);
         try {
 
             let obj = new LoginController().authenticate(req.body.login, req.body.password).subscribe({
-                next: user => {                       
-                    // if user is found and password is right
-                    // create a token
-                    let token = sign(user.toObject(), API.tokenKey, { expiresIn: API.tokeExpiresTime });
-                    
+                next: token => {                    
                     // return the information including token as JSON        
                     res.status(STATUSCODES.OK).send({ 
                         success: true,

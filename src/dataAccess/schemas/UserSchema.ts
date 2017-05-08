@@ -1,4 +1,5 @@
 import DataAccess from '../DataAccess';
+import RedisAcces from '../RedisAcces';
 import IUser from '../../models/interface/IUser'
 import Roles from '../../models/Roles';
 
