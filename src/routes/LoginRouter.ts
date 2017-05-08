@@ -28,7 +28,6 @@ export class LoginRouter {
       */
      public login(req: Request, res: Response, next: NextFunction): void {
         var ip = req.connection.remoteAddress;
-        console.log('ip: ', ip);
         try {
 
             let obj = new LoginController().authenticate(req.body.login, req.body.password).subscribe({
@@ -37,7 +36,8 @@ export class LoginRouter {
                     res.status(STATUSCODES.OK).send({ 
                         success: true,
                         message: "Vous êtes connecté.",
-                        token: token
+                        token: token,
+                        ip: ip
                     }); 
 
                 },
