@@ -22,7 +22,7 @@ export class LoginController {
      * @param _login user login
      * @param _password user password
      */
-    public authenticate(_login: string, _password: string) {
+    public authenticate(_login: string, _password: string, _ip: string) {
 
         //UserSchema.create(new User('test','test857',false,'test@test.com', Roles.ADMIN, 'local/image.jpeg'));
         const self = this;
@@ -42,7 +42,7 @@ export class LoginController {
                         // create a token
                         let token = sign(user.toObject(), API.tokenKey, { expiresIn: API.tokeExpiresTime });
 
-                        self.setRedis(observer, token, token);
+                        self.setRedis(observer, _ip, token);
                         
                         observer.next(token); 
                         observer.complete();                    
@@ -60,15 +60,15 @@ export class LoginController {
         }    
     }
 
-    private setRedis(observer: any, token: any, user: any){
+    private setRedis(observer: any, key: any, user: any){
         // save token in redis
-        RedisAcces.instance.set(token, JSON.stringify(user), function (err, reply) {
+        RedisAcces.instance.set(key, JSON.stringify(user), function (err, reply) {
             if (err) {
                 observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Redis erreur: ${err}` )); 
             }
 
             if (reply) {
-                RedisAcces.instance.expire(token, API.tokeExpiresTime_SEC, function (err, reply) {
+                RedisAcces.instance.expire(key, API.tokeExpiresTime_SEC, function (err, reply) {
                     if (err) {
                         observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Can not set the expire value for the token key' )); 
                     }

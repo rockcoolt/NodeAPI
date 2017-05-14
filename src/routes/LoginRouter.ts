@@ -27,10 +27,10 @@ export class LoginRouter {
       * @param next 
       */
      public login(req: Request, res: Response, next: NextFunction): void {
-        var ip = req.headers['x-appengine-user-ip'] || 3;
+        var ip = req.headers['x-real-ip'];
         try {
 
-            let obj = new LoginController().authenticate(req.body.login, req.body.password).subscribe({
+            let obj = new LoginController().authenticate(req.body.login, req.body.password, ip).subscribe({
                 next: token => {                    
                     // return the information including token as JSON        
                     res.status(STATUSCODES.OK).send({ 
