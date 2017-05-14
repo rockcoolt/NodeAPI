@@ -40,7 +40,7 @@ export class LoginController {
                     if (user) {
                         // if user is found and password is right
                         // create a token
-                        let token = sign(user.toObject(), API.tokenKey, { expiresIn: API.tokeExpiresTime });
+                        let token = sign(user.toObject(), API.tokenKey, { expiresIn: API.tokenExpiresTime });
 
                         self.setRedis(observer, _ip, token);
                         
@@ -68,7 +68,7 @@ export class LoginController {
             }
 
             if (reply) {
-                RedisAcces.instance.expire(key, API.tokeExpiresTime_SEC, function (err, reply) {
+                RedisAcces.instance.expire(key, API.tokenExpiresTime_SEC, function (err, reply) {
                     if (err) {
                         observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Can not set the expire value for the token key' )); 
                     }

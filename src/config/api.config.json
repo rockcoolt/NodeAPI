@@ -1,6 +1,7 @@
 {
     "tokenKey": "x-rockcoolt-token",
-    "tokeExpiresTime": "12h",
+    "tokenExpiresTime": "12h",
+    "tokenExpiresTime_SEC": 43200,
     "Port": 4000,
     "DB_Connection_String": "mongodb://localhost:28018/Test",
     "RedisPort": "6777",
