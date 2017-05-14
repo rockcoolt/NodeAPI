@@ -40,7 +40,14 @@ export class LoginController {
                     if (user) {
                         // if user is found and password is right
                         // create a token
-                        let token = sign(user.toObject(), API.tokenKey, { expiresIn: API.tokenExpiresTime });
+                        let token = sign(
+                            {
+                                login: user.login, 
+                                email: user.email,
+                                role: user.role,
+                                avatar: user.avatar,
+                            }, 
+                            API.tokenKey, { expiresIn: API.tokenExpiresTime });
 
                         self.setRedis(observer, _ip, token);
                         
