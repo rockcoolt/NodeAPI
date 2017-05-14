@@ -22,7 +22,7 @@ export class LoginController {
      * @param _login user login
      * @param _password user password
      */
-    public authenticate(_login: string, _password: string, _ip: string) {
+    public authenticate(_login: string, _password: string, _ip: string): Observable<any> {
 
         //UserSchema.create(new User('test','test857',false,'test@test.com', Roles.ADMIN, 'local/image.jpeg'));
         const self = this;
@@ -62,12 +62,12 @@ export class LoginController {
 
     private setRedis(observer: any, key: any, user: any){
         // save token in redis
-        RedisAcces.instance.set(key, JSON.stringify(user), function (err, reply) {
+        RedisAcces.instance.set(key, JSON.stringify(user), function (err, response) {
             if (err) {
                 observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Redis erreur: ${err}` )); 
             }
 
-            if (reply) {
+            if (response) {
                 RedisAcces.instance.expire(key, API.tokenExpiresTime_SEC, function (err, reply) {
                     if (err) {
                         observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Can not set the expire value for the token key' )); 
@@ -84,6 +84,24 @@ export class LoginController {
                observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Token not set in redis' )); 
             }
         });
+    }
+
+    public logout(_ip: string): Observable<any>{
+        let observable = Observable.create(function (observer) {
+             RedisAcces.instance.del(_ip, function (err, response) {
+                if (err) {
+                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Can not delete the key' )); 
+                }
+                 if (response) {
+                    console.log(response);
+                    observer.next(response); 
+                } else {
+                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Redis erreur: ${response}` )); 
+                }
+             })
+        });
+
+        return observable;
     }
 }
 

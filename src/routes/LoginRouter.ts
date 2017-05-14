@@ -67,10 +67,28 @@ export class LoginRouter {
       * @param next 
       */
      public logout(req: Request, res: Response, next: NextFunction): void {
-         res.json({
-            success: true,
-            message: 'Logout'
-        });
+         var ip = req.headers['x-real-ip'];
+         try {
+            new LoginController().authenticate(req.body.login, req.body.password, ip).subscribe({
+                 next: reponse => {
+                    res.status(STATUSCODES.OK).send({ 
+                        success: true,
+                        message: "Vous êtes déconnecté.",
+                    });   
+                 },
+                 error: error => {                
+                    res.status(error.code).send({ 
+                        success: false,
+                        message: error.message
+                    });
+                },
+            });
+         } catch (error) {
+            res.status(error.code).send({ 
+                success: false,
+                message: error.message
+            });          
+        }
      }
 
      /**
