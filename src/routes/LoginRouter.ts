@@ -69,7 +69,7 @@ export class LoginRouter {
      public logout(req: Request, res: Response, next: NextFunction): void {
          var ip = req.headers['x-real-ip'];
          try {
-            new LoginController().authenticate(req.body.login, req.body.password, ip).subscribe({
+            new LoginController().logout(ip).subscribe({
                  next: reponse => {
                     res.status(STATUSCODES.OK).send({ 
                         success: true,
