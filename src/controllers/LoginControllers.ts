@@ -96,7 +96,7 @@ export class LoginController {
                     console.log(response);
                     observer.next(response); 
                 } else {
-                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Redis erreur: ${response || err}` )); 
+                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Redis erreur: key not found ${response}` )); 
                 }
              })
         });
