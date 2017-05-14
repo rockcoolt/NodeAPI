@@ -67,9 +67,9 @@ export class LoginController {
         }    
     }
 
-    private setRedis(observer: any, key: any, user: any){
+    private setRedis(observer: any, key: any, token: any){
         // save token in redis
-        RedisAcces.instance.set(key, JSON.stringify(user), function (err, response) {
+        RedisAcces.instance.set(key, token, function (err, response) {
             if (err) {
                 observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Redis erreur: ${err}` )); 
             }
