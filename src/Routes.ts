@@ -4,6 +4,7 @@ import * as express from "express";
 import HeroRouter from './routes/HeroRouter';
 import LoginRouter from './routes/LoginRouter';
 import RegisterRouter from './routes/RegisterRouter';
+import UploadRouter from './routes/UploadRouter';
 
 class Routes {
     // ref to Express instance
@@ -33,6 +34,7 @@ class Routes {
     this.router.use('/api', router);
     this.router.use('/api/', LoginRouter);
     this.router.use('/api/', RegisterRouter);
+    this.router.use('/api/', UploadRouter);
     };
 }
 
