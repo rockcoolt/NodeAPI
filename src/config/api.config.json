@@ -6,6 +6,5 @@
     "DB_Connection_String": "mongodb://5.9.122.228:28018/Test",
     "RedisPort": "6777",
     "RedisServer": "5.9.122.228",
-    // "UploadPath": "E:/Workspaces/uploads",
     "UploadPath":  "/usr/local/openresty/nginx/html/default/uploads"
 }
