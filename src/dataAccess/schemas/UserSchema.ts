@@ -23,7 +23,7 @@ export class UserSchema {
                type: String,
                required: true
            },
-            roles: {
+            role: {
                type: String,
                required: true
            },

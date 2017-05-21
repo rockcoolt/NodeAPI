@@ -37,7 +37,7 @@ export class UploadControllers {
         return observable;    
     }
 
-    public download(id: any): Observable<any> {
+    public getUpload(id: any): Observable<any> {
         console.log('id:', id);
         const self = this;
         let observable = Observable.create(function (observer) {
@@ -47,7 +47,6 @@ export class UploadControllers {
                         const result = col.get(id);
                         if (!result) {
                             observer.error(new Error(STATUSCODES.NOT_FOUND, 'Image non trouvé'));  
-                            return;
                         };
                         observer.next(result);
                     }

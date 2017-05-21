@@ -1,4 +1,4 @@
-import { Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { sign, verify, TokenExpiredError } from 'jsonwebtoken';
 
 //Models
@@ -15,6 +15,8 @@ const API = require('../config/api.config');
 import UserSchema from '../dataAccess/schemas/UserSchema';
 import RedisAcces from '../dataAccess/RedisAcces';
 
+import Captcha from '../services/captcha';
+import * as request from 'request';
 export class LoginController {
 
     /**
@@ -22,7 +24,7 @@ export class LoginController {
      * @param _login user login
      * @param _password user password
      */
-    public authenticate(_login: string, _password: string, _ip: string): Observable<any> {
+    public authenticate(_login: string, _password: string, _captcha: string ,_ip: string): Observable<any> {
 
         //UserSchema.create(new User('test','test857',false,'test@test.com', Roles.ADMIN, 'local/image.jpeg'));
         const self = this;
@@ -31,34 +33,44 @@ export class LoginController {
         try {
 
             let observable = Observable.create(function (observer) {
-                UserSchema.findOne({ login : _model.Login() , password : _model.Password() })
-                .exec()
-                .onResolve((err, user) => {
-                    if (!user) {
-                        observer.error(new Error(STATUSCODES.BAD_REQUEST, "Login ou mot de passe incorrect."));                    
-                    }
-                    if (user) {
-                        // if user is found and password is right
-                        // create a token
-                        let token = sign(
-                            {
-                                login: user.login, 
-                                email: user.email,
-                                role: user.role,
-                                avatar: user.avatar,
-                                ip: _ip
-                            }, 
-                            API.tokenKey, { expiresIn: API.tokenExpiresTime });
-
-                        self.setRedis(observer, user.login, token);
-                        
-                        observer.next(token); 
-                        observer.complete();                    
-                    }
-                    if (err) {
-                        observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Base de donnée erreur: ${err.errmsg}` )); 
-                    }             
-                });  
+                    Captcha.verifyRecaptcha(_captcha, _ip).subscribe({
+                        next: reponse => {
+                            if (reponse) {
+                                UserSchema.findOne({ login : _model.Login() , password : _model.Password() })
+                                    .exec()
+                                    .onResolve((err, user) => {
+                                        if (!user) {
+                                            observer.error(new Error(STATUSCODES.BAD_REQUEST, "Login ou mot de passe incorrect."));                    
+                                        }
+                                        if (user) {
+                                            // if user is found and password is right
+                                            // create a token
+                                            const uAuth = {
+                                                login: user.login, 
+                                                email: user.email,
+                                                role: user.role,
+                                                avatar: user.avatar,
+                                                ip: _ip
+                                            }
+                                            let token = sign(uAuth, API.tokenKey, { expiresIn: API.tokenExpiresTime });
+                                            self.setRedis(observer, user.login, token);
+                                            
+                                            observer.next({token: token, user: uAuth}); 
+                                            observer.complete();                    
+                                        }
+                                        if (err) {
+                                            observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Base de donnée erreur: ${err.errmsg}.` )); 
+                                        }             
+                                    }); 
+                                
+                            } else {
+                                 observer.error(new Error(STATUSCODES.BAD_REQUEST, `Votre CAPTCHA n'est pas valide.` )); 
+                            }
+                        }, 
+                        error: error => {
+                            observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Erreur lors de la vérification du CAPTCHA ${error}.` ));     
+                        }
+                    });
             });
 
             return observable;
@@ -94,9 +106,9 @@ export class LoginController {
         });
     }
 
-    public logout(_ip: string): Observable<any>{
+    public logout(_login: string): Observable<any>{
         let observable = Observable.create(function (observer) {
-             RedisAcces.instance.del(_ip, function (err, response) {
+             RedisAcces.instance.del(_login, function (err, response) {
                 if (err) {
                     observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Can not delete the key' )); 
                 }

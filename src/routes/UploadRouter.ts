@@ -31,6 +31,12 @@ export class UploadRouter {
                         message: "Fichier uploadé.",
                         data: { id: data.$loki, fileName: data.filename, originalName: data.originalname },
                     });  
+                },
+                 error: error => {                
+                    res.status(error.code).send({ 
+                        success: false,
+                        message: error.message
+                    });
                 }
             });
         } catch (error) {
@@ -43,10 +49,16 @@ export class UploadRouter {
 
     download(req: Request, res: Response, next: NextFunction): void {
         try {
-            let col = new UploadControllers().download(req.params['id']).subscribe({
+            let col = new UploadControllers().getUpload(req.params['id']).subscribe({
                 next: fichier => {
                     res.setHeader('Content-Type', fichier.mimetype);
                     fs.createReadStream(path.join(API.UploadPath, fichier.filename)).pipe(res); 
+                },
+                 error: error => {                
+                    res.status(error.code).send({ 
+                        success: false,
+                        message: error.message
+                    });
                 }
             }); 
         }

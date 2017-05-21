@@ -13,8 +13,8 @@ class Socket {
         this.io.sockets.use(function(socket, next) {
             if (socket.handshake.query && socket.handshake.query.token) {
                 verify(socket.handshake.query.token, API.tokenKey, function(error, decoded){
-                    if(error){
-                        console.log('error: ', error);
+                    if(error){  
+                        console.log(error);      
                         return next(new Error('Authentication error'));
                     }
                     socket.decoded = decoded;
@@ -26,10 +26,7 @@ class Socket {
         .on('connection', function(socket) {
             socket.emit('message', `Bienvenu ${socket.decoded.login} !`);
             socket.broadcast.emit('message', `${socket.decoded.login} vient de se connecter !`);
-             socket.on('message', function (message) {
-                 socket.emit('message', `TEST BABY`);
-            });	
-        });
+        })
     }
   
 }

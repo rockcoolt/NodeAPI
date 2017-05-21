@@ -11,7 +11,7 @@ class User implements IUser {
     private password: string;
     private login: string;
     private created: Date;
-    private roles: string;
+    private role: string;
     private avatar: string;
 
     Email(): string {
@@ -30,8 +30,8 @@ class User implements IUser {
         return this.created;
     }
    
-    Roles(): string {
-        return this.roles;
+    Role(): string {
+        return this.role;
     }
 
     Avatar(): string {
@@ -39,13 +39,13 @@ class User implements IUser {
     }
 
 
-    constructor(_login: string, _password: string,  _isAuth: boolean = false, _email?: string, _roles?: string, _avatar? : string ){
+    constructor(_login: string, _password: string,  _isAuth: boolean = false, _email?: string, _role?: string, _avatar? : string ){
         this.setLogin(_login);
         this.setPassword(_password);
 
         if (!_isAuth) {
             this.setEmail(_email);
-            this.setRoles(_roles);
+            this.setRole(_role);
             this.avatar = _avatar;
         }       
     }
@@ -75,8 +75,8 @@ class User implements IUser {
         this.password = _password;
     }
 
-    private setRoles(_roles: string) :void {
-        this.roles = _roles? _roles: Roles.USER;       
+    private setRole(_role: string) :void {
+        this.role = _role? _role: Roles.USER;       
     }
 }
 

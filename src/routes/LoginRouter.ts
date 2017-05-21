@@ -29,15 +29,16 @@ export class LoginRouter {
      public login(req: Request, res: Response, next: NextFunction): void {
         var ip = req.headers['x-real-ip'];
         try {
-            let obj = new LoginController().authenticate(req.body.login, req.body.password, ip).subscribe({
-                next: token => {   
+            let obj = new LoginController().authenticate(req.body.login, req.body.password, req.body.captcha, ip).subscribe({
+                next: data => {   
                     // set cookie              
                     // return the information including token as JSON        
                     res.cookie(API.cookieKey, req.body.login)
                     .status(STATUSCODES.OK).send({ 
                         success: true,
                         message: "Vous êtes connecté.",
-                        token: token,
+                        user: data.user,
+                        token: data.token,
                         ip: ip
                     });  
                 },
@@ -67,9 +68,8 @@ export class LoginRouter {
       * @param next 
       */
      public logout(req: Request, res: Response, next: NextFunction): void {
-         var ip = req.headers['x-real-ip'];
          try {
-            new LoginController().logout(ip).subscribe({
+            new LoginController().logout(req.body.login).subscribe({
                  next: reponse => {
                     res.status(STATUSCODES.OK).send({ 
                         success: true,
@@ -96,7 +96,7 @@ export class LoginRouter {
       */
      public init(): void {
         this.router.post('/login', this.login);
-        this.router.get('/logout', this.logout);
+        this.router.post('/logout', this.logout);
      }
 
 }
