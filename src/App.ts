@@ -1,8 +1,8 @@
-import * as path          from 'path';
 import * as express       from 'express';
 import * as logger        from 'morgan';
 import * as bodyParser    from 'body-parser';
 import * as cors          from 'cors'
+import * as cookieParser  from "cookie-parser";
 
 import Routes             from './Routes';
 // Creates and configures an ExpressJS web server.
@@ -23,7 +23,7 @@ class App {
     this.express.use(function (req, res, next) {
       res.header("Access-Control-Allow-Origin", "http://localhost:4200");
       res.header("Access-Control-Allow-Credentials", "true");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cookie");
       res.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT,DELETE");
       next();
     });
@@ -35,6 +35,7 @@ class App {
     this.express.use(cors());
     this.express.use(bodyParser.json({limit:'50mb'}));
     this.express.use(bodyParser.urlencoded({ extended: false , limit:'50mb',  parameterLimit: 1000000}));
+    this.express.use(cookieParser());
   };
 }
 

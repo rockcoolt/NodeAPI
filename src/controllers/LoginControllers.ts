@@ -46,10 +46,11 @@ export class LoginController {
                                 email: user.email,
                                 role: user.role,
                                 avatar: user.avatar,
+                                ip: _ip
                             }, 
                             API.tokenKey, { expiresIn: API.tokenExpiresTime });
 
-                        self.setRedis(observer, _ip, token);
+                        self.setRedis(observer, user.login, token);
                         
                         observer.next(token); 
                         observer.complete();                    

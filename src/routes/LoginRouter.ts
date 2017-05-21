@@ -29,17 +29,17 @@ export class LoginRouter {
      public login(req: Request, res: Response, next: NextFunction): void {
         var ip = req.headers['x-real-ip'];
         try {
-
             let obj = new LoginController().authenticate(req.body.login, req.body.password, ip).subscribe({
-                next: token => {                    
+                next: token => {   
+                    // set cookie              
                     // return the information including token as JSON        
-                    res.status(STATUSCODES.OK).send({ 
+                    res.cookie(API.cookieKey, req.body.login)
+                    .status(STATUSCODES.OK).send({ 
                         success: true,
                         message: "Vous êtes connecté.",
                         token: token,
                         ip: ip
-                    }); 
-
+                    });  
                 },
                 error: error => {
                 
