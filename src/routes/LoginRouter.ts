@@ -34,6 +34,7 @@ export class LoginRouter {
                     // set cookie              
                     // return the information including token as JSON        
                     res.cookie(API.cookieKey, req.body.login)
+                    res.cookie(API.tokenKey, data.token)
                     .status(STATUSCODES.OK).send({ 
                         success: true,
                         message: "Vous êtes connecté.",
