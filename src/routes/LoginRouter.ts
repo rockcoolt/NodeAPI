@@ -33,7 +33,6 @@ export class LoginRouter {
                 next: data => {   
                     // set cookie              
                     // return the information including token as JSON        
-                    res.cookie(API.cookieKey, req.body.login)
                     res.cookie(API.tokenKey, data.token)
                     .status(STATUSCODES.OK).send({ 
                         success: true,
