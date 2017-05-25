@@ -110,19 +110,43 @@ export class LoginController {
         let observable = Observable.create(function (observer) {
              RedisAcces.instance.del(_login, function (err, response) {
                 if (err) {
-                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Can not delete the key' )); 
+                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Redis erreur: Can not delete the key' )); 
                 }
                  if (response) {
                     console.log(response);
                     observer.next(response); 
                 } else {
-                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, `Redis erreur: key not found ${response}` )); 
+                    observer.error(new Error(STATUSCODES.UNAUTHORIZED, `Vous n'étiez pas authentifié: ${response}` )); 
                 }
              })
         });
 
         return observable;
     }
+
+    public verify(_login: string): Observable<any>{
+        let observable = Observable.create(function (observer) {
+             RedisAcces.instance.get(_login, function (err, response) {
+                if (err) {
+                    observer.error(new Error(STATUSCODES.INTERNAL_SERVER_ERROR, 'Redis erreur: Can not check the key' )); 
+                }
+                 if (response) {
+                   verify(response, API.tokenKey, function(error, decoded){
+                        if(error){  
+                            observer.error(new Error(STATUSCODES.UNAUTHORIZED, `Vous n'êtes pas authentifié: ${response}` ));              
+                        }
+                        console.log(decoded);
+                        observer.next(response);                     
+                    });
+                } else {
+                    observer.error(new Error(STATUSCODES.UNAUTHORIZED, `Vous n'êtes pas authentifié: ${response}` )); 
+                }
+             })
+        });
+
+        return observable;
+    }
+
 }
 
 export default LoginController;

@@ -91,12 +91,37 @@ export class LoginRouter {
         }
      }
 
+     public verify(req: Request, res: Response, next: NextFunction){
+        try {
+            new LoginController().verify(req.body.login).subscribe({
+                 next: reponse => {
+                    res.status(STATUSCODES.OK).send({ 
+                        success: true,
+                        message: "Vous êtes authentifié.",
+                    });   
+                 },
+                 error: error => {                
+                    res.status(error.code).send({ 
+                        success: false,
+                        message: error.message
+                    });
+                },
+            });
+         } catch (error) {
+            res.status(error.code).send({ 
+                success: false,
+                message: error.message
+            });          
+        }
+     }
+
      /**
       * Initialize routes
       */
      public init(): void {
         this.router.post('/login', this.login);
         this.router.post('/logout', this.logout);
+        this.router.post('/verify', this.verify);
      }
 
 }
