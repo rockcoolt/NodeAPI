@@ -23,7 +23,6 @@ export class RegisterRouter {
 
             let obj = new RegisteController().registration(req.body.login, req.body.email, req.body.password, req.body.role, req.body.avatar).subscribe({
                 next: created => {
-                    console.log('created: ', created);
                     res.status(STATUSCODES.CREATED).send({ 
                         success: true,
                         message: "Enregistrement effectué."

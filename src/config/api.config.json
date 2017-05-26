@@ -1,6 +1,5 @@
 {
     "tokenKey": "x-rockcoolt-token",
-    "cookieKey": "x-rockcoolt-cookie",
     "tokenExpiresTime": "12h",
     "tokenExpiresTime_SEC": 43200,
     "Port": 4000,
